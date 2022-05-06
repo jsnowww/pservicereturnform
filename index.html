@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>PS Return Form Maker</title>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+
+</head>
+<body>
+    <div class="container"
+    <form name="returnformform" id="returnformform" oninput="qrstring()">
+
+        
+<div class="container">
+    <div class="reference">
+        <label id="testreferencelabel"><span class="tooltip" data-text="You should have an expected and valid T-number here">Test Reference</span></label>
+        <input id="testreference" oninput="qrstring(), triggerCreateQRCode()" type="text" name="testreference" size="30" placeholder="T-Number" class="input" required >
+
+        <label id="skulabel"><span class="tooltip" data-text="Use only valid and expected SKUs">SKU</span></label>
+        <input id="sku" type="sku" oninput="qrstring(), triggerCreateQRCode()" name="sku" size="30" placeholder="SKU/K" class="input" required >
+ 
+        <label id="lotlabel"><span class="tooltip" data-text="This can be anything but ideally within 6 characters">LOT </span></label>
+        <input id="lot" type="text" oninput="qrstring(), triggerCreateQRCode()" name="lot" size="30" value="ABC123" placeholder="LOT number" value= "class="input" >
+
+
+        <label id="expirylabel">Expiry</label>
+        <input type="date" id="date" oninput="qrstring()" name="date"
+        value="2022-12-31"
+        min="" max="">
+        <input type="hidden" id="input"  placeholder="input here" >
+        <div id="qrcode"></div>
+        <p id="qrtext"></p>
+
+
+        
+ </div>
+        
+    </div>
+  <div class="inbetween"></div>
+    <div class="optional">
+        <form id="myForm">
+        <label id="firstnamelabel">First Name</label>
+        <input id="firstname" type="text" name="firstname" size="30" placeholder="Optional first name" class="input" >
+
+        <label id="lastnamelabel">Last  Name</label>
+        <input id="lastname" type="text" name="lastname" size="30" placeholder="Optional last name" class="input" >
+
+        <label id="dateofbirth">Date of birth</label>
+
+        <input type="date" id="dob" name="dob"
+        value="2000-01-01"
+        min="" max="">
+
+        <label id="sampletime">Sample Time</label>
+        <input type="time" id="stime" name="stime"
+       min="00:00" max="23:59" required>
+
+       <label id="sampledate">Sample Date</label>
+       <input type="date" id="sdate" name="sdate"
+       value="2022-06-01"
+       min="" max="">
+    </div>
+    </form>
+    <div class="inbetween"></div>
+
+    <div class="output">
+        <canvas id="myCanvas" width="840" height="665"></canvas>
+
+    </div>
+</div>
+
+<script>
+
+
+var qrbutton = document.getElementById('qrbutton');
+var tref = document.getElementById('testreference');
+var sku = document.getElementById('sku');
+var lot = document.getElementById('lot');
+var date = document.getElementById('date');
+var qrimg = document.getElementById('qrcode');
+
+
+
+function qrstring() 
+{
+    var str =
+     '01' + tref.value + 
+        
+     '-SKU:' + sku.value +
+        
+     '-EXPIRY:' + date.value.replace(/-/g,"")
+     + '-LOT:'+ lot.value;
+
+    document.getElementById('qrtext').innerHTML=str;
+    document.getElementById('input').value = str;
+}
+
+
+</script>
+
+
+
+
+<script>
+var sideSize = 150;
+var settings = {text:'', width: sideSize, height: sideSize};
+var qrcode = new QRCode(document.getElementById("qrcode"), settings);
+
+function triggerCreateQRCode() {
+  qrcode.clear();
+  createQRCode(document.getElementById('input').value);
+}
+
+function createQRCode(input) {
+  qrcode.makeCode(input);
+
+}
+
+</script>
+<script>
+  var canvas = document.getElementById("myCanvas");
+  var context = canvas.getContext("2d");
+  var imageObj = new Image();
+  var ceimg =  new Image();
+  var dwn = document.getElementById('btndownload');
+  var img = new Image();
+
+  imageObj.onload = function()
+  {
+  }  
+
+
+  imageObj.src = "./returnform.png"; 
+
+  var myForm = document.getElementById('myForm');
+  myForm.addEventListener('input', function(e)
+    {      context.drawImage(imageObj, 0, 0);
+
+    //list values in the form here
+
+      var firstname = document.getElementById('firstname').value;
+      var lastname = document.getElementById('lastname').value;
+      var dob = document.getElementById('dob').value;
+      var stime = document.getElementById('stime').value;
+      var sdate = document.getElementById('sdate').value;
+
+  
+
+
+
+
+      
+
+
+
+
+
+
+//add values from above with font choices
+      context.font = "Lighter 14pt Monospace";
+      context.fillText(firstname, 305, 305);
+      context.fillText(lastname, 305, 334);
+      context.drawImage(img, 10,10);
+
+      context.fillText(dob.slice(8, 9), 309, 376);
+      context.fillText(dob.slice(9, 10), 342, 376);
+      context.fillText(dob.slice(5, 6), 407, 376);
+      context.fillText(dob.slice(6,7), 447, 376);
+      context.fillText(dob.slice(2,3), 509, 376);
+      context.fillText(dob.slice(3,4), 542, 376);
+
+      context.fillText(stime.slice(0,1), 310, 267);
+      context.fillText(stime.slice(1,2), 340, 267);
+      context.fillText(stime.slice(3,4), 410, 267);
+      context.fillText(stime.slice(4,5), 440, 267);
+
+      context.fillText(sdate.slice(8, 9), 309, 235);
+      context.fillText(sdate.slice(9, 10), 342, 235);
+      context.fillText(sdate.slice(5, 6), 407, 235);
+      context.fillText(sdate.slice(6,7), 447, 235);
+      context.fillText(sdate.slice(2,3), 509, 235);
+      context.fillText(sdate.slice(3,4), 542, 235);
+
+
+
+      context.fillText(expiry, 480, 115);
+      context.font = "bold 11pt Arial";
+      context.fillText(sku, 7, 58);
+      context.font = "lighter 10pt Arial";
+      context.fillText(box, 6, 81);
+      context.fillText(prick, 6, 101);
+      context.fillText(ifu, 6, 121);
+      context.fillText(plasters, 6, 141);
+      context.fillText(awipe, 6, 161);
+      context.fillText(wipe, 6, 181);
+      context.fillText(returnlab, 6, 202);
+      context.fillText(returnform, 6, 222);
+      context.fillText(tube1, 6, 244);
+      context.fillText(tube2, 6, 264);
+
+      if(tube2.length == 0) {
+        context.fillText(tubeves, 6, 264);
+        context.font = "bold 11pt Arial";
+        context.fillStyle = "white";
+        context.fillText("████████████████████████████████████████",2,292)}
+
+         else if(tube2.length >= 1) 
+         {
+          context.font = "lighter 10pt Arial";
+          context.fillStyle = "black";
+           context.fillText(tubeves, 6, 284);
+         }
+         context.font = "lighter 8pt Arial";
+         context.fillStyle = "black";
+      context.fillText(office, 35, 330);
+      context.fillText(assembler, 35, 345);
+      if(ce.length >= 3) {
+    context.drawImage(ceimg, 430, 203);
+  }
+
+         e.preventDefault();
+
+         
+
+  });
+
+  
+    
+</script>
+</body>
+</html>
